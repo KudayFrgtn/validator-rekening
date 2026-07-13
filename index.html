@@ -321,6 +321,8 @@
   <!-- STEP 2: UPLOAD -->
   <div class="card hidden" id="cardUpload">
     <h2><span class="num">02</span>Upload File Excel</h2>
+    <p style="font-size:13px; color:var(--ink-soft); margin:0 0 12px;">Belum punya file? Unduh dulu template kosongnya, isi datanya, lalu upload kembali di bawah.</p>
+    <button class="btn secondary" id="btnTemplate" style="margin-bottom:16px;">Download Template Excel</button>
     <div class="dropzone" id="dropzone">
       <p><b>Klik untuk pilih file</b> atau tarik file ke sini</p>
       <p style="margin-top:4px;">Kolom yang dibutuhkan: <span class="mono">Bank</span>, <span class="mono">No Rek</span>, <span class="mono">Nama</span></p>
@@ -468,6 +470,19 @@ els.btnConnect.addEventListener('click', async () => {
 });
 
 // ---- FILE UPLOAD ----
+document.getElementById('btnTemplate').addEventListener('click', () => {
+  const data = [
+    { Bank: 'BCA', 'No Rek': '0562100731', Nama: 'Contoh Nama Pemilik' },
+    { Bank: 'BRI', 'No Rek': '110601003647539', Nama: '' },
+    { Bank: '', 'No Rek': '', Nama: '' },
+  ];
+  const ws = XLSX.utils.json_to_sheet(data);
+  ws['!cols'] = [{wch:12},{wch:20},{wch:28}];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Template');
+  XLSX.writeFile(wb, 'template-validasi-rekening.xlsx');
+});
+
 els.dropzone.addEventListener('click', () => els.fileInput.click());
 els.dropzone.addEventListener('dragover', e => { e.preventDefault(); els.dropzone.classList.add('drag'); });
 els.dropzone.addEventListener('dragleave', () => els.dropzone.classList.remove('drag'));
